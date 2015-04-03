@@ -1,0 +1,22 @@
+QListWidget#listWidget1
+{
+    color: rgb(240, 240, 240);
+
+    background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+                                stop: 0 rgb(50, 50, 50), stop: 1 rgb(110, 110, 110));
+}
+
+QListWidget::item:selected#listWidget1
+{
+    color: rgb(80, 80, 80);
+    background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+                                stop: 0 rgb(180, 180, 180), stop: 1 rgb(240, 240, 240));
+    height: 60 px;
+}
+
+
+QListView::item:hover:!selected#listWidget1
+{
+    background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+                                stop: 0 rgb(70, 70, 70), stop: 1 rgb(130, 130, 130));
+}

@@ -1,0 +1,37 @@
+*
+{
+    color: rgb(150, 150, 150);
+    background: rgb(0, 0, 0);
+
+    selection-color: rgb(0, 0, 0);
+    selection-background-color: rgb(150, 150, 150);
+}
+
+QMainWindow
+{
+    background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+            stop: 0 rgb(20, 20, 20), stop: 1 rgb(100, 100, 100));
+}
+
+QLineEdit
+{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(150, 150, 150);
+    border-radius: 3px;
+}
+
+QPushButton
+{
+    border-style: outset;
+    border-width: 1px;
+    border-color: rgb(150, 150, 150);
+    border-radius: 6px;
+    padding: 2px;
+}
+
+QPushButton:pressed
+{
+    color: rgb(100, 100, 100);
+    border-style: inset;
+}
