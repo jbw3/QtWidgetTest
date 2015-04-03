@@ -14,6 +14,8 @@ const QString TAB_STYLE =
 "transform: Rotation { origin.x: 0; origin.y: 0; angle: 45 };\n"
 "}";
 
+const QStringList STYLES = QStringList() << "blue" << "dark" << "roundButtons" << "listWidget";
+
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Dialog)
@@ -22,14 +24,8 @@ Dialog::Dialog(QWidget *parent) :
 
     ui->setupUi(this);
 
-//    const QString STYLE_SHEET_NAME = ":/qss/dark.qss";
-//    const QString STYLE_SHEET_NAME = ":/qss/roundButtons.qss";
-    const QString STYLE_SHEET_NAME = ":qss/listWidget.qss";
-    QFile file(STYLE_SHEET_NAME);
-    file.open(QFile::ReadOnly);
-    QString styleSheet = QLatin1String(file.readAll());
-    file.close();
-    setStyleSheet(styleSheet);
+    ui->styleComboBox->addItems(STYLES);
+    loadStyle();
 
     ui->listWidget1->setTextElideMode(Qt::ElideRight);
     for (int i = 0; i < 10; ++i)
@@ -88,12 +84,36 @@ Dialog::Dialog(QWidget *parent) :
     connect(ui->listWidget2, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(doneEditing(QListWidgetItem*)));
 //    connect(ui->listWidget2, SIGNAL(activated
 //    connect(ui->listWidget2, SIGNAL(itemChanged(QListWidgetItem*)), ui->addPushButton, SLOT(setFocus()));
+
+    connect(ui->styleComboBox, SIGNAL(currentTextChanged(QString)), this, SLOT(loadStyle()));
 }
 
 Dialog::~Dialog()
 {
     delete ui;
     delete validator;
+}
+
+void Dialog::loadStyle()
+{
+
+    const QString STYLE_SHEET_NAME = ":/qss/dark.qss";
+//    const QString STYLE_SHEET_NAME = ":/qss/roundButtons.qss";
+//    const QString STYLE_SHEET_NAME = ":qss/listWidget.qss";
+    QString styleName = QString(":/qss/%1.qss").arg(ui->styleComboBox->currentText());
+
+    QFile file(styleName);
+    bool ok = file.open(QFile::ReadOnly);
+    if (ok)
+    {
+        QString styleSheet = QLatin1String(file.readAll());
+        file.close();
+        setStyleSheet(styleSheet);
+    }
+    else
+    {
+        qWarning() << "Could not load style sheet:" << file.errorString();
+    }
 }
 
 void Dialog::filterFocus()

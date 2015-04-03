@@ -3,5 +3,6 @@
         <file>dark.qss</file>
         <file>roundButtons.qss</file>
         <file>listWidget.qss</file>
+        <file>blue.qss</file>
     </qresource>
 </RCC>

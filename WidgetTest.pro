@@ -25,7 +25,8 @@ FORMS    += dialog.ui
 OTHER_FILES += \
     dark.qss \
     roundButtons.qss \
-    listWidget.qss
+    listWidget.qss \
+    blue.qss
 
 RESOURCES += \
     resources.qrc

@@ -25,6 +25,7 @@ private:
     QIntValidator* validator;
 
 private slots:
+    void loadStyle();
     void UpdateValues(int value);
     void FillLineEdits();
     void filterFocus();

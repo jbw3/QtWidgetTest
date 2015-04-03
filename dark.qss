@@ -1,16 +1,22 @@
 *
 {
-    color: rgb(150, 150, 150);
-    background: rgb(0, 0, 0);
+    color: rgb(240, 240, 240);
+    background-color: rgb(10, 10, 10);
+    /*background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+                                stop: 0 rgb(10, 10, 10), stop: 1 rgb(50, 50, 50));*/
 
     selection-color: rgb(0, 0, 0);
-    selection-background-color: rgb(150, 150, 150);
+    selection-background-color: rgb(180, 180, 180);
 }
 
-QMainWindow
+QComboBox::drop-down
 {
-    background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
-            stop: 0 rgb(20, 20, 20), stop: 1 rgb(100, 100, 100));
+    border: 1px solid rgb(240, 240, 240);
+}
+
+QLabel
+{
+    color: rgb(240, 240, 240);
 }
 
 QLineEdit
@@ -21,6 +27,18 @@ QLineEdit
     border-radius: 3px;
 }
 
+QListView
+{
+    border: 1px solid rgb(150, 150, 150);
+    border-radius: 3px;
+}
+
+QMainWindow
+{
+    /*background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+            stop: 0 rgb(20, 20, 20), stop: 1 rgb(100, 100, 100));*/
+}
+
 QPushButton
 {
     border-style: outset;
@@ -28,10 +46,67 @@ QPushButton
     border-color: rgb(150, 150, 150);
     border-radius: 6px;
     padding: 2px;
+    margin: 6px;
 }
 
 QPushButton:pressed
 {
     color: rgb(100, 100, 100);
     border-style: inset;
+}
+
+QSpinBox
+{
+    border: 1px solid rgb(230, 230, 230);
+    border-radius: 4px;
+}
+
+QSpinBox::up-button
+{
+    border: 1px solid rgb(230, 230, 230);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    width: 16px;
+    margin-top: -1px;
+    margin-right: -1px;
+}
+
+QSpinBox::down-button
+{
+    border: 1px solid rgb(230, 230, 230);
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    width: 16px;
+    margin-bottom: -1px;
+    margin-right: -1px;
+}
+
+QTabBar::tab
+{
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0   rgb(80, 80, 80), stop: 0.4 rgb(50, 50, 50),
+                                stop: 0.5 rgb(20, 20, 20), stop: 1   rgb(40, 40, 40));
+    padding-left: 0.8em;
+    padding-right: 0.8em;
+    padding-top: 0.2em;
+    padding-bottom: 0.1em;
+}
+
+QTabBar::tab:selected
+{
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0   rgb(130, 130, 130), stop: 0.4 rgb(100, 100, 100),
+                                stop: 0.5 rgb(70, 70, 70), stop: 1   rgb(90, 90, 90));
+}
+
+QTabWidget::pane
+{
+    border-top: 1px solid rgb(240, 240, 240);
+    background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+                                stop: 0 rgb(10, 10, 10), stop: 1 rgb(90, 90, 90));
+}
+
+QTabWidget::tab-bar
+{
+    alignment: left;
 }
