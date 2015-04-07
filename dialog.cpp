@@ -25,6 +25,7 @@ Dialog::Dialog(QWidget *parent) :
     ui->setupUi(this);
 
     ui->styleComboBox->addItems(STYLES);
+    ui->styleComboBox->setCurrentText("dark");
     loadStyle();
 
     ui->listWidget1->setTextElideMode(Qt::ElideRight);
@@ -33,6 +34,16 @@ Dialog::Dialog(QWidget *parent) :
         ui->listWidget1->addItem(QString("Item %1").arg(i+1));
     }
     ui->listWidget1->addItem("This item has a very, very long label");
+
+    qDebug() << "width:" << width();
+    int count = ui->splitter->count();
+    qDebug() << "count:" << count;
+    QList<int> sizes;
+    sizes.push_back(90);
+    int otherSize = width() / (count - 1);
+    for (int i = 0; i < count - 1; ++i)
+        sizes.push_back(otherSize);
+    ui->splitter->setSizes(sizes);
 
     // ------ Table Widget ------
 

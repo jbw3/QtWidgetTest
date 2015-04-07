@@ -5,4 +5,8 @@
         <file>listWidget.qss</file>
         <file>blue.qss</file>
     </qresource>
+    <qresource prefix="/images">
+        <file>up-arrow.png</file>
+        <file>down-arrow.png</file>
+    </qresource>
 </RCC>
