@@ -14,9 +14,9 @@ const QString TAB_STYLE =
 "transform: Rotation { origin.x: 0; origin.y: 0; angle: 45 };\n"
 "}";
 
-const QStringList STYLES = QStringList() << "blue" << "dark" << "roundButtons" << "listWidget";
+const QStringList STYLES = QStringList() << "<default>" << "blue" << "dark" << "roundButtons" << "listWidget";
 
-Dialog::Dialog(QWidget *parent) :
+Dialog::Dialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::Dialog)
 {
@@ -25,7 +25,7 @@ Dialog::Dialog(QWidget *parent) :
     ui->setupUi(this);
 
     ui->styleComboBox->addItems(STYLES);
-    ui->styleComboBox->setCurrentText("dark");
+    ui->styleComboBox->setCurrentText("<default>");
     loadStyle();
 
     ui->listWidget1->setTextElideMode(Qt::ElideRight);
@@ -93,6 +93,7 @@ Dialog::Dialog(QWidget *parent) :
     connect(ui->removePushButton, SIGNAL(clicked()), this, SLOT(removeItem()));
 
     connect(ui->listWidget2, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(doneEditing(QListWidgetItem*)));
+    connect(ui->listWidget2->itemDelegate(), SIGNAL(commitData(QWidget*)), ui->addPushButton, SLOT(setFocus()));
 //    connect(ui->listWidget2, SIGNAL(activated
 //    connect(ui->listWidget2, SIGNAL(itemChanged(QListWidgetItem*)), ui->addPushButton, SLOT(setFocus()));
 
@@ -108,22 +109,30 @@ Dialog::~Dialog()
 void Dialog::loadStyle()
 {
 
-    const QString STYLE_SHEET_NAME = ":/qss/dark.qss";
+//    const QString STYLE_SHEET_NAME = ":/qss/dark.qss";
 //    const QString STYLE_SHEET_NAME = ":/qss/roundButtons.qss";
 //    const QString STYLE_SHEET_NAME = ":qss/listWidget.qss";
-    QString styleName = QString(":/qss/%1.qss").arg(ui->styleComboBox->currentText());
-
-    QFile file(styleName);
-    bool ok = file.open(QFile::ReadOnly);
-    if (ok)
+    QString styleText = ui->styleComboBox->currentText();
+    if (styleText == "<default>")
     {
-        QString styleSheet = QLatin1String(file.readAll());
-        file.close();
-        setStyleSheet(styleSheet);
+        setStyleSheet("");
     }
     else
     {
-        qWarning() << "Could not load style sheet:" << file.errorString();
+        QString styleName = QString(":/qss/%1.qss").arg(styleText);
+
+        QFile file(styleName);
+        bool ok = file.open(QFile::ReadOnly);
+        if (ok)
+        {
+            QString styleSheet = QLatin1String(file.readAll());
+            file.close();
+            setStyleSheet(styleSheet);
+        }
+        else
+        {
+            qWarning() << "Could not load style sheet:" << file.errorString();
+        }
     }
 }
 
@@ -173,8 +182,6 @@ void Dialog::doneEditing(QListWidgetItem* item)
         else
             item->setText(QString::number(validator->bottom()));
     }
-
-    ui->addPushButton->setFocus();
 }
 
 void Dialog::UpdateValues(int value)
