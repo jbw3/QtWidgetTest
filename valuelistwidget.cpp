@@ -3,6 +3,7 @@
 #include <QDropEvent>
 #include <QFileInfo>
 #include <QMimeData>
+#include <QTime>
 
 #include "validatingitemdelegate.h"
 #include "valuelistwidget.h"
@@ -10,7 +11,7 @@
 ValueListWidget::ValueListWidget(QWidget* parent) :
     QListWidget(parent)
 {
-    validator = new QIntValidator(0, 1000);
+    validator = new QIntValidator(0, 1000000000);
     ValidatingItemDelegate* delegate = new ValidatingItemDelegate(this);
     delegate->setValidator(validator);
 
@@ -133,10 +134,21 @@ void ValueListWidget::dropEvent(QDropEvent* event)
     }
 }
 
+void ValueListWidget::addAndEditItem()
+{
+    QListWidgetItem* item = new QListWidgetItem("", this);
+    item->setFlags(item->flags() | Qt::ItemIsEditable);
+
+    editItem(item);
+}
+
+void ValueListWidget::removeSelectedItems()
+{
+    qDeleteAll(selectedItems());
+}
+
 void ValueListWidget::doneEditing(QListWidgetItem* item)
 {
-    qDebug() << __FUNCTION__;
-
     if (item->text().isEmpty())
     {
         if (0 >= validator->bottom() && 0 <= validator->top())

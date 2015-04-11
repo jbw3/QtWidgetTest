@@ -2,6 +2,7 @@
 #include <QDir>
 #include <QFileSystemWatcher>
 #include <QShortcut>
+#include <QTime>
 
 #include "dialog.h"
 #include "ui_dialog.h"
@@ -96,8 +97,8 @@ Dialog::Dialog(QWidget* parent) :
 
     connect(shortcut, SIGNAL(activated()), this, SLOT(filterFocus()));
 
-    connect(ui->addPushButton, SIGNAL(clicked()), this, SLOT(addItem()));
-    connect(ui->removePushButton, SIGNAL(clicked()), this, SLOT(removeItem()));
+    connect(ui->addPushButton, &QPushButton::clicked, ui->listWidget2, &ValueListWidget::addAndEditItem);
+    connect(ui->removePushButton, &QPushButton::clicked, ui->listWidget2, &ValueListWidget::removeSelectedItems);
 
     connect(ui->listWidget2->itemDelegate(), SIGNAL(commitData(QWidget*)), ui->addPushButton, SLOT(setFocus()));
 //    connect(ui->listWidget2, SIGNAL(activated
@@ -151,34 +152,6 @@ void Dialog::filterFocus()
     qDebug() << __FUNCTION__;
 
     ui->filterLineEdit->setFocus();
-}
-
-void Dialog::addItem()
-{
-    qDebug() << __FUNCTION__;
-
-    QListWidgetItem* item = new QListWidgetItem("", ui->listWidget2);
-    item->setFlags(item->flags() | Qt::ItemIsEditable);
-
-//    ui->listWidget2->addItem(item);
-
-    ui->listWidget2->editItem(item);
-}
-
-void Dialog::removeItem()
-{
-    qDebug() << __FUNCTION__;
-
-    QList<QListWidgetItem*> selected = ui->listWidget2->selectedItems();
-
-    qDebug() << selected;
-
-    foreach (QListWidgetItem* item, selected)
-    {
-        int row = ui->listWidget2->row(item);
-        item = ui->listWidget2->takeItem(row);
-        delete item;
-    }
 }
 
 void Dialog::UpdateValues(int value)

@@ -15,6 +15,10 @@ public:
 
     virtual void dropEvent(QDropEvent* event);
 
+public slots:
+    void addAndEditItem();
+    void removeSelectedItems();
+
 protected:
     QIntValidator* validator;
 

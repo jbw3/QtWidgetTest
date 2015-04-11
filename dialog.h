@@ -29,8 +29,6 @@ private slots:
     void UpdateValues(int value);
     void FillLineEdits();
     void filterFocus();
-    void addItem();
-    void removeItem();
     void updateFileList();
 };
 
