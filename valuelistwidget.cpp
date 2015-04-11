@@ -2,16 +2,17 @@
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QFileInfo>
+#include <QKeyEvent>
 #include <QMimeData>
-#include <QTime>
 
 #include "validatingitemdelegate.h"
 #include "valuelistwidget.h"
 
-ValueListWidget::ValueListWidget(QWidget* parent) :
-    QListWidget(parent)
+ValueListWidget::ValueListWidget(QWidget* parent /* = 0 */, const QString& defaultValue /* = QStringLiteral("") */) :
+    QListWidget(parent),
+    defaultVal(defaultValue)
 {
-    validator = new QIntValidator(0, 1000000000);
+    validator = new QIntValidator(-10, 1000000000);
     ValidatingItemDelegate* delegate = new ValidatingItemDelegate(this);
     delegate->setValidator(validator);
 
@@ -19,8 +20,6 @@ ValueListWidget::ValueListWidget(QWidget* parent) :
 
     setAcceptDrops(true);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
-
-    connect(this, &ValueListWidget::itemChanged, this, &ValueListWidget::doneEditing);
 }
 
 ValueListWidget::~ValueListWidget()
@@ -134,9 +133,26 @@ void ValueListWidget::dropEvent(QDropEvent* event)
     }
 }
 
+void ValueListWidget::setDefaultValue(const QString& defaultValue)
+{
+    defaultVal = defaultValue;
+}
+
+void ValueListWidget::keyPressEvent(QKeyEvent* event)
+{
+    if (event->key() == Qt::Key_Delete)
+    {
+        removeSelectedItems();
+    }
+    else
+    {
+        QListWidget::keyPressEvent(event);
+    }
+}
+
 void ValueListWidget::addAndEditItem()
 {
-    QListWidgetItem* item = new QListWidgetItem("", this);
+    QListWidgetItem* item = new QListWidgetItem(defaultVal, this);
     item->setFlags(item->flags() | Qt::ItemIsEditable);
 
     editItem(item);
@@ -147,13 +163,9 @@ void ValueListWidget::removeSelectedItems()
     qDeleteAll(selectedItems());
 }
 
-void ValueListWidget::doneEditing(QListWidgetItem* item)
+void ValueListWidget::commitData(QWidget* editor)
 {
-    if (item->text().isEmpty())
-    {
-        if (0 >= validator->bottom() && 0 <= validator->top())
-            item->setText("0");
-        else
-            item->setText(QString::number(validator->bottom()));
-    }
+    qDebug() << __FUNCTION__;
+
+    QListWidget::commitData(editor);
 }

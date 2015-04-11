@@ -85,6 +85,8 @@ Dialog::Dialog(QWidget* parent) :
 
     // ------ List Widgets ------
 
+    ui->listWidget2->setDefaultValue(QStringLiteral("0"));
+
     updateFileList();
 
     // ------ Connections ------
@@ -99,10 +101,7 @@ Dialog::Dialog(QWidget* parent) :
 
     connect(ui->addPushButton, &QPushButton::clicked, ui->listWidget2, &ValueListWidget::addAndEditItem);
     connect(ui->removePushButton, &QPushButton::clicked, ui->listWidget2, &ValueListWidget::removeSelectedItems);
-
     connect(ui->listWidget2->itemDelegate(), SIGNAL(commitData(QWidget*)), ui->addPushButton, SLOT(setFocus()));
-//    connect(ui->listWidget2, SIGNAL(activated
-//    connect(ui->listWidget2, SIGNAL(itemChanged(QListWidgetItem*)), ui->addPushButton, SLOT(setFocus()));
 
     connect(ui->styleComboBox, SIGNAL(currentTextChanged(QString)), this, SLOT(loadStyle()));
 

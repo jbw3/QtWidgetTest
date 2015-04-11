@@ -7,7 +7,7 @@ class ValueListWidget : public QListWidget
 {
     Q_OBJECT
 public:
-    explicit ValueListWidget(QWidget* parent = 0);
+    explicit ValueListWidget(QWidget* parent = 0, const QString& defaultValue = QStringLiteral(""));
 
     virtual ~ValueListWidget();
 
@@ -15,15 +15,20 @@ public:
 
     virtual void dropEvent(QDropEvent* event);
 
+    virtual void setDefaultValue(const QString& defaultValue);
+
 public slots:
     void addAndEditItem();
     void removeSelectedItems();
 
 protected:
-    QIntValidator* validator;
+    QValidator* validator;
+    QString defaultVal;
+
+    virtual void keyPressEvent(QKeyEvent* event);
 
 protected slots:
-    void doneEditing(QListWidgetItem* item);
+    virtual void commitData(QWidget* editor);
 };
 
 #endif // VALUELISTWIDGET_H

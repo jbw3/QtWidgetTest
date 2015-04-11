@@ -3,7 +3,7 @@
 
 #include "validatingitemdelegate.h"
 
-#define CREATE_LINE_EDIT 0
+#define CREATE_LINE_EDIT 1
 
 ValidatingItemDelegate::ValidatingItemDelegate(QObject* parent) :
     QItemDelegate(parent),
@@ -16,7 +16,7 @@ void ValidatingItemDelegate::setValidator(const QValidator* v)
     validator = v;
 }
 
-QWidget* ValidatingItemDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const
+QWidget* ValidatingItemDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& /*option*/, const QModelIndex& /*index*/) const
 {
     qDebug() << __FUNCTION__;
 
@@ -28,7 +28,7 @@ QWidget* ValidatingItemDelegate::createEditor(QWidget* parent, const QStyleOptio
 #else
     QWidget* widget = QItemDelegate::createEditor(parent, option, index);
 
-    QLineEdit* lineEdit = reinterpret_cast<QLineEdit*>(widget);
+    QLineEdit* lineEdit = dynamic_cast<QLineEdit*>(widget);
     if (lineEdit != NULL)
     {
         lineEdit->setValidator(validator);
