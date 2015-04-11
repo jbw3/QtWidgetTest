@@ -360,18 +360,12 @@
             </layout>
            </item>
            <item>
-            <widget class="QListWidget" name="listWidget2">
-             <property name="tabKeyNavigation">
-              <bool>true</bool>
-             </property>
+            <widget class="ValueListWidget" name="listWidget2">
              <property name="dragEnabled">
               <bool>true</bool>
              </property>
              <property name="dragDropMode">
               <enum>QAbstractItemView::InternalMove</enum>
-             </property>
-             <property name="selectionMode">
-              <enum>QAbstractItemView::ExtendedSelection</enum>
              </property>
             </widget>
            </item>
@@ -392,6 +386,13 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>ValueListWidget</class>
+   <extends>QListWidget</extends>
+   <header>valuelistwidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -15,10 +15,12 @@ TEMPLATE = app
 SOURCES += \
         main.cpp \
         dialog.cpp \
-    validatingitemdelegate.cpp
+    validatingitemdelegate.cpp \
+    valuelistwidget.cpp
 
 HEADERS  += dialog.h \
-    validatingitemdelegate.h
+    validatingitemdelegate.h \
+    valuelistwidget.h
 
 FORMS    += dialog.ui
 

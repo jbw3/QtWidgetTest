@@ -84,12 +84,6 @@ Dialog::Dialog(QWidget* parent) :
 
     // ------ List Widgets ------
 
-    validator = new QIntValidator(1, 20);
-    ValidatingItemDelegate* delegate = new ValidatingItemDelegate(this);
-    delegate->setValidator(validator);
-
-    ui->listWidget2->setItemDelegate(delegate);
-
     updateFileList();
 
     // ------ Connections ------
@@ -105,7 +99,6 @@ Dialog::Dialog(QWidget* parent) :
     connect(ui->addPushButton, SIGNAL(clicked()), this, SLOT(addItem()));
     connect(ui->removePushButton, SIGNAL(clicked()), this, SLOT(removeItem()));
 
-    connect(ui->listWidget2, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(doneEditing(QListWidgetItem*)));
     connect(ui->listWidget2->itemDelegate(), SIGNAL(commitData(QWidget*)), ui->addPushButton, SLOT(setFocus()));
 //    connect(ui->listWidget2, SIGNAL(activated
 //    connect(ui->listWidget2, SIGNAL(itemChanged(QListWidgetItem*)), ui->addPushButton, SLOT(setFocus()));
@@ -118,7 +111,6 @@ Dialog::Dialog(QWidget* parent) :
 Dialog::~Dialog()
 {
     delete ui;
-    delete validator;
     delete watcher;
 
     qDebug() << __FUNCTION__;
@@ -186,19 +178,6 @@ void Dialog::removeItem()
         int row = ui->listWidget2->row(item);
         item = ui->listWidget2->takeItem(row);
         delete item;
-    }
-}
-
-void Dialog::doneEditing(QListWidgetItem* item)
-{
-    qDebug() << __FUNCTION__;
-
-    if (item->text().isEmpty())
-    {
-        if (0 >= validator->bottom() && 0 <= validator->top())
-            item->setText("0");
-        else
-            item->setText(QString::number(validator->bottom()));
     }
 }
 
