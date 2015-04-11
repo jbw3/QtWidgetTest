@@ -1,4 +1,6 @@
 #include <QDebug>
+#include <QDir>
+#include <QFileSystemWatcher>
 #include <QShortcut>
 
 #include "dialog.h"
@@ -16,6 +18,12 @@ const QString TAB_STYLE =
 
 const QStringList STYLES = QStringList() << "<default>" << "blue" << "dark" << "roundButtons" << "listWidget";
 
+#ifdef Q_OS_DARWIN
+const QString WATCH_PATH = QStringLiteral("../../../test");
+#else
+const QString WATCH_PATH = QStringLiteral("test");
+#endif
+
 Dialog::Dialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::Dialog)
@@ -23,6 +31,9 @@ Dialog::Dialog(QWidget* parent) :
     Q_INIT_RESOURCE(resources);
 
     ui->setupUi(this);
+
+    watcher = new QFileSystemWatcher;
+    watcher->addPath(WATCH_PATH);
 
     ui->styleComboBox->addItems(STYLES);
     ui->styleComboBox->setCurrentText("<default>");
@@ -79,6 +90,8 @@ Dialog::Dialog(QWidget* parent) :
 
     ui->listWidget2->setItemDelegate(delegate);
 
+    updateFileList();
+
     // ------ Connections ------
 
     connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(UpdateValues(int)));
@@ -98,12 +111,17 @@ Dialog::Dialog(QWidget* parent) :
 //    connect(ui->listWidget2, SIGNAL(itemChanged(QListWidgetItem*)), ui->addPushButton, SLOT(setFocus()));
 
     connect(ui->styleComboBox, SIGNAL(currentTextChanged(QString)), this, SLOT(loadStyle()));
+
+    connect(watcher, &QFileSystemWatcher::directoryChanged, this, &Dialog::updateFileList);
 }
 
 Dialog::~Dialog()
 {
     delete ui;
     delete validator;
+    delete watcher;
+
+    qDebug() << __FUNCTION__;
 }
 
 void Dialog::loadStyle()
@@ -196,4 +214,12 @@ void Dialog::FillLineEdits()
 {
     ui->lineEdit->setText("This is a test.");
     ui->lineEdit2->setText("Line edit 2");
+}
+
+void Dialog::updateFileList()
+{
+    QDir dirPath(WATCH_PATH);
+
+    ui->listWidget3->clear();
+    ui->listWidget3->addItems(dirPath.entryList(QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files));
 }

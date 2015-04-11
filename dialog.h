@@ -7,6 +7,7 @@ namespace Ui
 {
 class Dialog;
 }
+class QFileSystemWatcher;
 class QIntValidator;
 class QListWidgetItem;
 class QShortcut;
@@ -23,6 +24,7 @@ private:
     Ui::Dialog* ui;
     QShortcut* shortcut;
     QIntValidator* validator;
+    QFileSystemWatcher* watcher;
 
 private slots:
     void loadStyle();
@@ -32,6 +34,7 @@ private slots:
     void addItem();
     void removeItem();
     void doneEditing(QListWidgetItem* item);
+    void updateFileList();
 };
 
 #endif // DIALOG_H

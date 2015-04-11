@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>424</height>
+    <width>700</width>
+    <height>550</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -97,6 +97,19 @@
          <widget class="QSpinBox" name="spinBox"/>
         </item>
        </layout>
+      </widget>
+      <widget class="QKeySequenceEdit" name="keySequenceEdit">
+       <property name="geometry">
+        <rect>
+         <x>320</x>
+         <y>170</y>
+         <width>171</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="keySequence">
+        <string>Ctrl+F</string>
+       </property>
       </widget>
      </widget>
      <widget class="QWidget" name="tab2">
@@ -373,19 +386,6 @@
       <attribute name="title">
        <string>Tab 6</string>
       </attribute>
-      <widget class="QKeySequenceEdit" name="keySequenceEdit">
-       <property name="geometry">
-        <rect>
-         <x>150</x>
-         <y>160</y>
-         <width>171</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="keySequence">
-        <string>Ctrl+F</string>
-       </property>
-      </widget>
      </widget>
     </widget>
    </item>
