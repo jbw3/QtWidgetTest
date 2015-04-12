@@ -10,6 +10,8 @@ class ValidatingItemDelegate : public QItemDelegate
 public:
     explicit ValidatingItemDelegate(QObject* parent = 0);
 
+    const QValidator* getValidator() const;
+
     void setValidator(const QValidator* v);
 
     virtual QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;

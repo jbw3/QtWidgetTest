@@ -10,6 +10,7 @@ class Dialog;
 class QFileSystemWatcher;
 class QListWidgetItem;
 class QShortcut;
+class QValidator;
 
 class Dialog : public QDialog
 {
@@ -23,6 +24,7 @@ private:
     Ui::Dialog* ui;
     QShortcut* shortcut;
     QFileSystemWatcher* watcher;
+    QValidator* validator;
 
 private slots:
     void loadStyle();

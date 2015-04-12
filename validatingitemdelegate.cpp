@@ -1,14 +1,18 @@
-#include <QDebug>
+// Qt includes
 #include <QLineEdit>
 
+// project includes
 #include "validatingitemdelegate.h"
-
-#define CREATE_LINE_EDIT 1
 
 ValidatingItemDelegate::ValidatingItemDelegate(QObject* parent) :
     QItemDelegate(parent),
     validator(NULL)
 {
+}
+
+const QValidator* ValidatingItemDelegate::getValidator() const
+{
+    return validator;
 }
 
 void ValidatingItemDelegate::setValidator(const QValidator* v)
@@ -18,22 +22,8 @@ void ValidatingItemDelegate::setValidator(const QValidator* v)
 
 QWidget* ValidatingItemDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& /*option*/, const QModelIndex& /*index*/) const
 {
-    qDebug() << __FUNCTION__;
-
-#if CREATE_LINE_EDIT
     QLineEdit* lineEdit = new QLineEdit(parent);
     lineEdit->setValidator(validator);
 
     return lineEdit;
-#else
-    QWidget* widget = QItemDelegate::createEditor(parent, option, index);
-
-    QLineEdit* lineEdit = dynamic_cast<QLineEdit*>(widget);
-    if (lineEdit != NULL)
-    {
-        lineEdit->setValidator(validator);
-    }
-
-    return widget;
-#endif
 }

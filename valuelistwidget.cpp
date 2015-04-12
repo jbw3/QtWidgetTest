@@ -1,3 +1,4 @@
+// Qt includes
 #include <QDebug>
 #include <QDragEnterEvent>
 #include <QDropEvent>
@@ -5,26 +6,21 @@
 #include <QKeyEvent>
 #include <QMimeData>
 
+// project includes
 #include "validatingitemdelegate.h"
 #include "valuelistwidget.h"
 
 ValueListWidget::ValueListWidget(QWidget* parent /* = 0 */, const QString& defaultValue /* = QStringLiteral("") */) :
     QListWidget(parent),
-    defaultVal(defaultValue)
+    defaultVal(defaultValue),
+    validator(NULL)
 {
-    validator = new QIntValidator(-10, 1000000000);
-    ValidatingItemDelegate* delegate = new ValidatingItemDelegate(this);
-    delegate->setValidator(validator);
-
-    setItemDelegate(delegate);
-
     setAcceptDrops(true);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
 }
 
 ValueListWidget::~ValueListWidget()
 {
-    delete validator;
 }
 
 void ValueListWidget::dragEnterEvent(QDragEnterEvent* event)
@@ -60,13 +56,7 @@ void ValueListWidget::dragEnterEvent(QDragEnterEvent* event)
 
     if (canDrop)
     {
-        qDebug() << "You can drop!";
-
         event->acceptProposedAction();
-    }
-    else
-    {
-        qDebug() << "You cannot drop :(";
     }
 }
 
@@ -74,11 +64,13 @@ void ValueListWidget::dropEvent(QDropEvent* event)
 {
     qDebug() << __FUNCTION__;
 
-    if  (event->source() == this)
+    // if the event came from this widget, the user is dragging the
+    // items around; let the base class handle this
+    if (event->source() == this)
     {
         QListWidget::dropEvent(event);
     }
-    else
+    else // the user is dragging something from outside this widget
     {
         foreach (QUrl url, event->mimeData()->urls())
         {
@@ -88,27 +80,35 @@ void ValueListWidget::dropEvent(QDropEvent* event)
             {
                 QTextStream inStream(&inFile);
 
-                foreach (QString val, inStream.readAll().split(QStringLiteral(",")))
+                const QStringList& values = inStream.readAll().split(QStringLiteral(","));
+                foreach (QString val, values)
                 {
                     QString str = val;
 
                     bool isValid = false;
-                    int pos = 0;
-                    if (validator->validate(str, pos) == QValidator::Acceptable)
+                    if (validator == NULL)
                     {
                         isValid = true;
                     }
                     else
                     {
-                        // try stripping whitespace to see if that makes the string valid
-                        str = str.trimmed();
+                        int pos = 0;
                         if (validator->validate(str, pos) == QValidator::Acceptable)
                         {
                             isValid = true;
                         }
                         else
                         {
-                            isValid = false;
+                            // try stripping whitespace to see if that makes the string valid
+                            str = str.trimmed();
+                            if (validator->validate(str, pos) == QValidator::Acceptable)
+                            {
+                                isValid = true;
+                            }
+                            else
+                            {
+                                isValid = false;
+                            }
                         }
                     }
 
@@ -138,6 +138,11 @@ void ValueListWidget::setDefaultValue(const QString& defaultValue)
     defaultVal = defaultValue;
 }
 
+void ValueListWidget::setValidator(const QValidator* v)
+{
+    validator = v;
+}
+
 void ValueListWidget::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Delete)
@@ -161,11 +166,4 @@ void ValueListWidget::addAndEditItem()
 void ValueListWidget::removeSelectedItems()
 {
     qDeleteAll(selectedItems());
-}
-
-void ValueListWidget::commitData(QWidget* editor)
-{
-    qDebug() << __FUNCTION__;
-
-    QListWidget::commitData(editor);
 }

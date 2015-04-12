@@ -4,6 +4,7 @@
 #include <QShortcut>
 #include <QTime>
 
+#include "comboboxitemdelegate.h"
 #include "dialog.h"
 #include "ui_dialog.h"
 #include "qfile.h"
@@ -30,6 +31,8 @@ Dialog::Dialog(QWidget* parent) :
     ui(new Ui::Dialog)
 {
     Q_INIT_RESOURCE(resources);
+
+    Q_ASSERT(ui != nullptr);
 
     ui->setupUi(this);
 
@@ -85,7 +88,23 @@ Dialog::Dialog(QWidget* parent) :
 
     // ------ List Widgets ------
 
-    ui->listWidget2->setDefaultValue(QStringLiteral("0"));
+    // int values
+//    validator = new QIntValidator(-10, 1000000000);
+//    ValidatingItemDelegate* valDel = new ValidatingItemDelegate(ui->listWidget2);
+//    valDel->setValidator(validator);
+//    ui->listWidget2->setItemDelegate(valDel);
+//    ui->listWidget2->setDefaultValue(QStringLiteral("0"));
+//    ui->listWidget2->setValidator(validator);
+
+    // enum values
+    QStringList values = QStringList() << "one" << "two" << "three";
+    QRegularExpression regEx("one|two|three");
+    validator = new QRegularExpressionValidator(regEx);
+    ComboBoxItemDelegate* itemDel = new ComboBoxItemDelegate(ui->listWidget2);
+    itemDel->setItems(values);
+    ui->listWidget2->setItemDelegate(itemDel);
+    ui->listWidget2->setDefaultValue(values.at(0));
+    ui->listWidget2->setValidator(validator);
 
     updateFileList();
 
@@ -112,6 +131,7 @@ Dialog::~Dialog()
 {
     delete ui;
     delete watcher;
+    delete validator;
 
     qDebug() << __FUNCTION__;
 }

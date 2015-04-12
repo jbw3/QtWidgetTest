@@ -17,18 +17,17 @@ public:
 
     virtual void setDefaultValue(const QString& defaultValue);
 
+    virtual void setValidator(const QValidator* v);
+
 public slots:
     void addAndEditItem();
     void removeSelectedItems();
 
 protected:
-    QValidator* validator;
     QString defaultVal;
+    const QValidator* validator;
 
     virtual void keyPressEvent(QKeyEvent* event);
-
-protected slots:
-    virtual void commitData(QWidget* editor);
 };
 
 #endif // VALUELISTWIDGET_H
