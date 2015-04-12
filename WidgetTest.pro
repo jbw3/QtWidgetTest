@@ -11,16 +11,19 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = bin/WidgetTest
 TEMPLATE = app
 
+CONFIG += c++11
 
 SOURCES += \
         main.cpp \
         dialog.cpp \
     validatingitemdelegate.cpp \
-    valuelistwidget.cpp
+    valuelistwidget.cpp \
+    comboboxitemdelegate.cpp
 
 HEADERS  += dialog.h \
     validatingitemdelegate.h \
-    valuelistwidget.h
+    valuelistwidget.h \
+    comboboxitemdelegate.h
 
 FORMS    += dialog.ui
 
